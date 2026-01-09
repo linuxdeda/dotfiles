@@ -1,0 +1,82 @@
+2026-01-09T17:31:41.164Z - info: [ui] [AppStore] loading 0 repositories from store
+2026-01-09T17:31:41.181Z - info: [ui] [Welcome] no sign in step found. ignoring...
+2026-01-09T17:31:41.216Z - info: [ui] launching: 3.4.13-linux1 (Linux 6.18.3-2-cachyos)
+2026-01-09T17:31:41.233Z - info: [ui] execPath: '/opt/github-desktop/github-desktop'
+2026-01-09T17:31:41.233Z - info: [ui] [Welcome] no sign in step found. ignoring...
+2026-01-09T17:31:41.235Z - info: [ui] [Welcome] no sign in step found. ignoring...
+2026-01-09T17:31:41.253Z - info: [ui] [Welcome] no sign in step found. ignoring...
+2026-01-09T17:31:41.289Z - info: [ui] [Welcome] no sign in step found. ignoring...
+2026-01-09T17:31:41.636Z - info: [ui] Opt in reported.
+2026-01-09T17:31:44.139Z - info: [ui] [Welcome] advancing to step: SignInToDotComWithBrowser
+2026-01-09T17:31:44.143Z - info: [ui] [SignInStore] initializing OAuth flow
+2026-01-09T17:31:44.144Z - info: [main] opening in browser: https://github.com/login/oauth/authorize?client_id=3a723b10ac5575cc5bb9&scope=repo%20user%20workflow&state=171060d4-7204-4c48-a32d-3ce872e6dc12
+2026-01-09T17:31:44.144Z - info: [ui] [Welcome] current sign in state not found. ignoring...
+2026-01-09T17:31:58.185Z - info: [ui] [Welcome] kind Authentication is the same as Authentication. ignoring...
+2026-01-09T17:32:29.745Z - info: [main] Received possible protocol arguments: 4
+2026-01-09T17:32:29.746Z - info: [main] Processing protocol url
+2026-01-09T17:32:29.853Z - info: [main] Received possible protocol arguments: 2
+2026-01-09T17:32:29.856Z - info: [main] Processing protocol url
+2026-01-09T17:32:29.919Z - info: [ui] [Welcome] kind Authentication is the same as Authentication. ignoring...
+2026-01-09T17:32:31.060Z - info: [ui] [SignInStore] account resolved
+2026-01-09T17:32:31.060Z - info: [ui] [AppStore] adding account linuxdeda (Linux Deda) to store
+2026-01-09T17:32:31.071Z - error: [ui] Error adding account 'linuxdeda'
+Error: The name is not activatable
+2026-01-09T17:32:31.922Z - info: [ui] [Welcome] advancing to step: ConfigureGit
+2026-01-09T17:32:32.925Z - info: [ui] [Welcome] no sign in step found. ignoring...
+2026-01-09T17:32:33.177Z - info: [ui] [Welcome] no sign in step found. ignoring...
+2026-01-09T17:32:35.202Z - info: [ui] [Welcome] no sign in step found. ignoring...
+2026-01-09T17:32:37.493Z - info: [ui] [Welcome] no sign in step found. ignoring...
+2026-01-09T17:32:46.913Z - info: [ui] [Welcome] no sign in step found. ignoring...
+2026-01-09T17:33:05.667Z - info: [ui] [Welcome] no sign in step found. ignoring...
+2026-01-09T17:33:50.263Z - info: [ui] [SignInStore] initializing OAuth flow
+2026-01-09T17:33:50.269Z - info: [main] opening in browser: https://github.com/login/oauth/authorize?client_id=3a723b10ac5575cc5bb9&scope=repo%20user%20workflow&state=1199b6f2-e7c1-45af-b042-86dd7aec6bcc
+2026-01-09T17:33:59.225Z - info: [main] Received possible protocol arguments: 4
+2026-01-09T17:33:59.225Z - info: [main] Processing protocol url
+2026-01-09T17:33:59.313Z - info: [main] Received possible protocol arguments: 2
+2026-01-09T17:33:59.317Z - info: [main] Processing protocol url
+2026-01-09T17:34:00.331Z - info: [ui] [SignInStore] account resolved
+2026-01-09T17:34:00.331Z - info: [ui] [AppStore] adding account linuxdeda (Linux Deda) to store
+2026-01-09T17:34:00.337Z - error: [ui] Error adding account 'linuxdeda'
+Error: The name is not activatable
+2026-01-09T17:34:13.038Z - info: [main] Received possible protocol arguments: 4
+2026-01-09T17:34:13.039Z - info: [main] Processing protocol url
+2026-01-09T17:34:13.105Z - info: [main] Received possible protocol arguments: 2
+2026-01-09T17:34:13.108Z - info: [main] Processing protocol url
+2026-01-09T17:34:15.746Z - info: [main] Received possible protocol arguments: 4
+2026-01-09T17:34:15.746Z - info: [main] Processing protocol url
+2026-01-09T17:34:15.824Z - info: [main] Received possible protocol arguments: 2
+2026-01-09T17:34:22.808Z - info: [main] Received possible protocol arguments: 4
+2026-01-09T17:34:22.808Z - info: [main] Processing protocol url
+2026-01-09T17:34:22.921Z - info: [main] Received possible protocol arguments: 2
+2026-01-09T17:34:22.926Z - info: [main] Processing protocol url
+2026-01-09T17:34:22.995Z - info: [main] Received possible protocol arguments: 4
+2026-01-09T17:34:22.996Z - info: [main] Processing protocol url
+2026-01-09T17:34:23.069Z - info: [main] Received possible protocol arguments: 2
+2026-01-09T17:34:23.073Z - info: [main] Processing protocol url
+2026-01-09T17:34:27.115Z - info: [main] Received possible protocol arguments: 4
+2026-01-09T17:34:27.115Z - info: [main] Processing protocol url
+2026-01-09T17:34:27.208Z - info: [main] Received possible protocol arguments: 2
+2026-01-09T17:34:27.211Z - info: [main] Processing protocol url
+2026-01-09T17:34:43.157Z - info: [ui] [SignInStore] initializing OAuth flow
+2026-01-09T17:34:43.174Z - info: [main] opening in browser: https://github.com/login/oauth/authorize?client_id=3a723b10ac5575cc5bb9&scope=repo%20user%20workflow&state=7b1c4440-0b00-40b9-892b-897d19c020d3
+2026-01-09T17:34:52.752Z - info: [main] Received possible protocol arguments: 4
+2026-01-09T17:34:52.753Z - info: [main] Processing protocol url
+2026-01-09T17:34:52.829Z - info: [main] Received possible protocol arguments: 2
+2026-01-09T17:34:52.833Z - info: [main] Processing protocol url
+2026-01-09T17:34:54.130Z - info: [ui] [SignInStore] account resolved
+2026-01-09T17:34:54.139Z - info: [ui] [AppStore] adding account linuxdeda (Linux Deda) to store
+2026-01-09T17:34:54.142Z - error: [ui] Error adding account 'linuxdeda'
+Error: The name is not activatable
+2026-01-09T17:37:42.649Z - info: [ui] [SignInStore] initializing OAuth flow
+2026-01-09T17:37:42.661Z - info: [main] opening in browser: https://github.com/login/oauth/authorize?client_id=3a723b10ac5575cc5bb9&scope=repo%20user%20workflow&state=4749cb6e-b505-4e70-8359-515cada20d1e
+2026-01-09T17:37:46.494Z - info: [main] Received possible protocol arguments: 4
+2026-01-09T17:37:46.494Z - info: [main] Processing protocol url
+2026-01-09T17:37:46.572Z - info: [main] Received possible protocol arguments: 2
+2026-01-09T17:37:47.938Z - info: [ui] [SignInStore] account resolved
+2026-01-09T17:37:47.954Z - info: [ui] [AppStore] adding account linuxdeda (Linux Deda) to store
+2026-01-09T17:38:03.567Z - info: [ui] Subscribed 'linuxdeda' to Alive channel
+2026-01-09T17:38:17.360Z - info: [ui] [AppStore] adding repository at /home/linuxdeda/Documents/GitHub/dotfiles to store
+2026-01-09T17:38:40.240Z - info: [main] Received possible protocol arguments: 4
+2026-01-09T17:38:40.240Z - info: [main] Processing protocol url
+2026-01-09T17:38:40.387Z - info: [main] Received possible protocol arguments: 2
+2026-01-09T17:38:40.393Z - info: [main] Processing protocol url

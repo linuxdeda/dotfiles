@@ -1,8 +1,8 @@
 # ☁️ Dotfiles
 
-Personalne Linux konfiguracije za **Arch, Debian-based (MX/NixOS)** i **RPM** (Fedora) desktopove. Hyprland/XFCE/LightDM setovi iz Novog Beograda – minimalni, optimizovani za performanse.
+Personalne Linux konfiguracije za **Arch, Debian-based (MX/NixOS)** i **RPM** (Fedora) desktopove. Hyprland/XFCE/LightDM setovi – minimalni, optimizovani za performanse.
 
-https://github.com/linuxdeda/dotfiles/raw/main/hyprland.png
+![HZprland](https://github.com/tvojusername/dotfiles/raw/main/screenshot-hyprland.png)
 
 ## Quick Start
 ```bash

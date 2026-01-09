@@ -2,7 +2,7 @@
 
 Personalne Linux konfiguracije za **Arch, Debian-based (MX/NixOS)** i **RPM** (Fedora) desktopove. Hyprland/XFCE/LightDM setovi – minimalni, optimizovani za performanse.
 
-![HZprland](https://github.com/tvojusername/dotfiles/raw/main/screenshot-hyprland.png)
+![Hyprland](https://github.com/tvojusername/dotfiles/raw/main/screenshot-hyprland.png)
 
 ## Quick Start
 ```bash

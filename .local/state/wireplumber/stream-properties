@@ -1,0 +1,5 @@
+[stream-properties]
+Audio/Sink:node.name:auto_null={"channelVolumes":[1.000000, 1.000000], "volume":1.000000, "channelMap":["FL", "FR"], "mute":false}
+Input/Audio:application.id:org.gnome.VolumeControl={"channelVolumes":[1.000000], "volume":1.000000, "channelMap":["MONO"], "mute":false}
+Output/Audio:application.id:viber={"channelVolumes":[1.000000], "mute":false, "channelMap":["MONO"], "volume":1.000000}
+Output/Audio:application.name:Brave={"channelMap":["FL", "FR"], "channelVolumes":[1.000000, 1.000000], "volume":1.000000, "mute":false}

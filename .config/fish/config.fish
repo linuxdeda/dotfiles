@@ -1,7 +1,5 @@
 set -U fish_greeting
 
-starship init fish | source
-
 function banner
   set COLS (tput cols)
   printf '\e[H\e[2J'

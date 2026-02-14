@@ -7,9 +7,6 @@ in
   home.username = "lxd";
   home.homeDirectory = "/home/lxd";
 
-  # Shell i git
-  programs.git.enable = true;
-
   # NE uključuj programs.kitty.enable jer ćeš koristiti svoj config
   # programs.kitty.enable = true;
 
@@ -21,6 +18,12 @@ in
     telegram-desktop
     hardinfo2
   ];
+
+  programs.git = {
+  enable = true;
+  userName  = "linuxdeda";
+  userEmail = "linuxdeda@gmail.com";
+  };
 
   # Linkovanje sopstvenih konfiguracija
   home.file.".config/kitty/kitty.conf".source = "${cfgDir}/kitty.conf";

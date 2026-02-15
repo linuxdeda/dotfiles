@@ -17,12 +17,16 @@ in
     gimp
     telegram-desktop
     hardinfo2
+    alacritty
+    thunderbird
+    bazaar
+    planify
   ];
 
   programs.git = {
   enable = true;
-  userName  = "linuxdeda";
-  userEmail = "linuxdeda@gmail.com";
+  settings.user.name  = "linuxdeda";
+  settings.user.email = "linuxdeda@gmail.com";
   };
 
   # Linkovanje sopstvenih konfiguracija

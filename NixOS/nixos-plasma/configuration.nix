@@ -74,10 +74,6 @@ services.tlp = {
     kdePackages.kpmcore
     vscode
     flatpak
-    thunderbird
-    bazaar
-    planify
-    github-desktop
     tlp
   ];
   

@@ -21,11 +21,16 @@
         modules = [
           ./configuration.nix
           home-manager.nixosModules.home-manager
+
+          # Dodatna konfiguracija direktno u flake-u
+          {
+            nixpkgs.config.allowUnfree = true;
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
         ];
 
-        # uklonjen pkgs iz specialArgs
         specialArgs = { inherit home-manager; };
       };
     };
 }
-

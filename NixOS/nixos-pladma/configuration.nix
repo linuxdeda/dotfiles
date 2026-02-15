@@ -68,7 +68,6 @@ services.tlp = {
 
   # Paketi
   environment.systemPackages = with pkgs; [
-    kitty
     fastfetch
     figlet
     kdePackages.kpmcore

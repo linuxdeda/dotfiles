@@ -21,6 +21,7 @@ in
     thunderbird
     bazaar
     planify
+    megasync
   ];
 
   programs.git = {

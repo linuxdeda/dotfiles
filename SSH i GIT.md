@@ -1,12 +1,10 @@
 # SSH i Git Setup
 
 ## Generisanje ključa
-```bash
 ssh-keygen -t ed25519 -C "linuxdeda@gmail.com"
 
 
-1. SSH agent (Fish)
-```bash
+## SSH agent (Fish)
 eval (ssh-agent -c)
 ssh-add ~/.ssh/id_ed25519
 

@@ -54,5 +54,5 @@ rm ~/.config/git/config
 nano ~/.config/git/config
 
 [user]
-  name = linuxdeda
-  email = linuxdeda@gmail.com
+name = linuxdeda
+email = linuxdeda@gmail.com

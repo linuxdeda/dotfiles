@@ -47,20 +47,14 @@ git commit -m "Sređen SSH i Git setup"
 git push
 
 
+## Nix read-only git config fix
 
-## Nix je napravio symlink koji je "read-only". Obriši ga:
-
-```bash
 rm ~/.config/git/config
-
-
-## Sada napravi novi, običan tekstualni fajl na istom mestu:
-
-```bash
 nano ~/.config/git/config
 
-```bash
+
 [user]
-name = linuxdeda
+name = linuxdeda  
 email = linuxdeda@gmail.com
+
 

@@ -54,4 +54,13 @@ git push
 rm ~/.config/git/config
 
 
+## Sada napravi novi, običan tekstualni fajl na istom mestu:
+
+```bash
+nano ~/.config/git/config
+
+```bash
+[user]
+name = linuxdeda
+email = linuxdeda@gmail.com
 

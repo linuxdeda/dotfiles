@@ -48,12 +48,11 @@ git push
 
 
 
-# Nix je napravio symlink koji je "read-only". Obriši ga:
-
+##  Nix je napravio symlink koji je "read-only". Obriši ga:
 ```bash
 rm ~/.config/git/config
 
-# Sada napravi novi, običan tekstualni fajl na istom mestu:
+## Sada napravi novi, običan tekstualni fajl na istom mestu:
 
 ```bash
 nano ~/.config/git/config

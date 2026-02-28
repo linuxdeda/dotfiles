@@ -40,17 +40,21 @@ alias gsave='git add .; and git commit -m "Update"; and git push'
 ssh -T git@github.com
 
 # Git Workflow
+
 ```bash
 git add .
 git commit -m "Sređen SSH i Git setup"
 git push
 
-\# Nix je napravio symlink koji je "read-only". Obriši ga:
+
+
+## Nix je napravio symlink koji je "read-only". Obriši ga:
 
 ```bash
 rm ~/.config/git/config
 
-\# Sada napravi novi, običan tekstualni fajl na istom mestu:
+
+## Sada napravi novi, običan tekstualni fajl na istom mestu:
 
 ```bash
 nano ~/.config/git/config

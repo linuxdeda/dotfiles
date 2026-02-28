@@ -30,8 +30,3 @@ ssh -T git@github.com
 
 ## Nix fix
 rm ~/.config/git/config
-nano ~/.config/git/config
-
-[user]
-name = linuxdeda
-email = linuxdeda@gmail.com

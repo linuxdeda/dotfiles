@@ -39,13 +39,11 @@ alias gsave='git add .; and git commit -m "Update"; and git push'
 # Testirati konekciju
 ssh -T git@github.com
 
-# Pošalji izmene bez lozinke
-
+### Git Workflow
 ```bash
 git add .
 git commit -m "Sređen SSH i Git setup"
 git push
-
 
 
 ##  Nix je napravio symlink koji je "read-only". Obriši ga:
@@ -59,5 +57,6 @@ nano ~/.config/git/config
 
 ```bash
 [user]
-name = linuxdeda
-email = linuxdeda@gmail.com
+    name = linuxdeda
+    email = linuxdeda@gmail.com
+

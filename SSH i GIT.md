@@ -44,3 +44,14 @@ git add .
 git commit -m "Sređen SSH i Git setup"
 git push
 
+
+NAPOMENA:
+Nix je napravio symlink koji je "read-only". Obriši ga:
+rm ~/.config/git/config
+
+Sada napravi novi, običan tekstualni fajl na istom mestu:
+nano ~/.config/git/config
+
+[user]
+  name = linuxdeda
+  email = linuxdeda@gmail.com

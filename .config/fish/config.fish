@@ -29,8 +29,8 @@ if status is-interactive
     echo
 
     # ALIASI (Prečice)
-    alias sys-up='doas nixos-rebuild switch --flake .#nixos'
-    alias sys-clean='doas nix-collect-garbage -d'
+    alias sys-up='doas dnf upgrade --refresh'
+    alias sys-clean='doas dnf autoremove && sudo dnf clean all'
     alias usb-list='doas usbguard list-devices'
     alias usb-allow='doas usbguard allow-device'
     alias battery='doas tlp-stat -p'

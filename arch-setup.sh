@@ -92,11 +92,15 @@ chmod 600 /home/lxd/.ssh/authorized_keys
 mkdir -p /home/lxd/.config/fish
 cat <<EOF > /home/lxd/.config/fish/config.fish
 if status is-interactive
-    alias sys-up="doas pacman -Syu"
-    alias sys-clean="doas pacman -Rns \$(pacman -Qtdq) && doas pacman -Scc"
-    alias usb-list="doas usbguard list-devices"
-    alias usb-allow="doas usbguard allow-device"
-    alias fetch="fastfetch"
+   alias sys-up='doas pacman -Syu --refresh'
+   alias sys-clean='doas pacman -Rns (pacman -Qtdq) && doas pacman -Sc'  # fish subshell, ali za sys-clean koristi funkciju dole
+   alias usb-list='doas usbguard list-devices'
+   alias usb-allow='doas usbguard allow-device'
+   alias battery='doas tlp-stat -b'
+   alias fetch='fastfetch'
+   alias gs='git status'
+   alias gp='git push'
+   alias gl='git pull'
 end
 EOF
 chown -R lxd:lxd /home/lxd/.config/fish

@@ -29,17 +29,15 @@ if status is-interactive
     echo
 
     # ALIASI (Prečice)
-    alias sys-up='doas dnf upgrade --refresh'
-    alias sys-clean='doas dnf autoremove && sudo dnf clean all'
-    alias usb-list='doas usbguard list-devices'
-    alias usb-allow='doas usbguard allow-device'
-    alias battery='doas tlp-stat -p'
-    alias fetch='fastfetch'
-    
-    # Git prečice (dodao sam ti par korisnih)
-    alias gs='git status'
-    alias gp='git push'
-    alias gl='git pull'
+  alias sys-up='doas pacman -Syu --refresh'
+  alias sys-clean='doas pacman -Rns (pacman -Qtdq) && doas pacman -Sc'  # fish subshell, ali za sys-clean koristi funkciju dole
+  alias usb-list='doas usbguard list-devices'
+  alias usb-allow='doas usbguard allow-device'
+  alias battery='doas tlp-stat -b'
+  alias fetch='fastfetch'
+  alias gs='git status'
+  alias gp='git push'
+  alias gl='git pull'
 
     # BINDINGS
     # CTRL+L sada čisti ekran, ispisuje banner i fastfetch ponovo

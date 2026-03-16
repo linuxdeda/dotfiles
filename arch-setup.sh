@@ -9,7 +9,7 @@ echo "🚀 Arch KDE setup iz Fedore + Snapper..."
 
 # 1. OSNOVNI ALATI
 echo "📦 Osnovni alati..."
-pacman -Syu --noconfirm doas fish git neovim fastfetch figlet alacritty flatpak util-linux pcsc-tools pcsclite btrfs-progs
+pacman -Syu --noconfirm doas fish git neovim fastfetch figlet alacritty flatpak util-linux pcsc-tools pcsclite btrfs-progs ntfs-3g dosfstools
 
 # doas.conf
 echo "permit persist :wheel" > /etc/doas.conf
@@ -72,7 +72,7 @@ tlp start
 
 # 3. PROGRAMI
 echo "🛒 Aplikacije..."
-pacman -S --noconfirm vlc libreoffice-fresh gimp thunderbird keepassxc syncthing networkmanager-openvpn kcalc kdenlive ktorrent dolphin partitionmanager firejail usbguard veracrypt python-pip btop btrfs-assistant
+pacman -S --noconfirm vlc libreoffice-fresh gimp syncthing networkmanager-openvpn kcalc kdenlive ktorrent dolphin firejail usbguard veracrypt python-pip btop btrfs-assistant gparted
 
 # 4. BEZBEDNOST
 echo "🛡️ Firejail & USBGuard..."

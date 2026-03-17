@@ -9,7 +9,7 @@ echo "🚀 Arch KDE setup iz Fedore + Snapper..."
 
 # 1. OSNOVNI ALATI
 echo "📦 Osnovni alati..."
-pacman -Syu --noconfirm doas fish git neovim fastfetch figlet alacritty flatpak util-linux pcsc-tools pcsclite btrfs-progs ntfs-3g dosfstools
+pacman -Syu --noconfirm doas fish git neovim fastfetch figlet alacritty flatpak util-linux pcsc-tools pcsclite btrfs-progs ntfs-3g dosfstools gwenview
 
 # doas.conf
 echo "permit persist :wheel" > /etc/doas.conf

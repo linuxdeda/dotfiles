@@ -95,10 +95,12 @@ echo "🔌 Uključivanje pametnih servisa..."
 systemctl enable --now pcscd
 systemctl enable --now NetworkManager
 
-echo "🔋 Podešavanje TLP..."
-systemctl mask power-profiles-daemon.service >/dev/null 2>&1 || true
-apt remove -y power-profiles-daemon || true
-systemctl enable --now tlp
+echo "🔌 Uključivanje pametnih servisa..."
+# Prvo restartujemo socket jer on često blokira servis
+systemctl stop pcscd.service pcscd.socket || true
+systemctl daemon-reload
+systemctl enable --now pcscd.socket
+systemctl enable --now pcscd.service
 
 write_file_if_changed /etc/tlp.conf <<'EOF'
 TLP_ENABLE=1
@@ -198,7 +200,6 @@ echo "🔥 UFW..."
 ufw --force reset
 ufw default deny incoming
 ufw default allow outgoing
-ufw allow OpenSSH
 
 if ufw app info syncthing >/dev/null 2>&1; then
   ufw allow syncthing

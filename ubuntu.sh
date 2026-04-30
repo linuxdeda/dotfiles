@@ -71,11 +71,11 @@ apt install -y software-properties-common ca-certificates curl gnupg lsb-release
 
 echo "📦 Instalacija paketa..."
 apt install -y \
-  fish git vim fastfetch figlet alacritty flatpak fzf curl \
+  fish git vim fastfetch figlet ghostty flatpak fzf curl \
   pcscd intel-microcode \
   tlp tlp-rdw \
   vlc libreoffice gimp \
-  syncthing openvpn network-manager-openvpn-gnome \
+  openvpn network-manager-openvpn-gnome \
   python3-pip firejail usbguard ufw systemd-resolved
 
 if apt-cache show opendoas >/dev/null 2>&1; then

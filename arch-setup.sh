@@ -1,33 +1,63 @@
 #!/bin/bash
 
+# Provera privilegija
 if [ "$EUID" -ne 0 ]; then
   echo "❌ Pokreni kao root (sudo ./arch-setup.sh)"
   exit 1
 fi
 
-echo "🚀 Arch KDE setup iz Fedore + Snapper..."
+# Definisanje korisnika
+REAL_USER="lxd"
+USER_HOME="/home/$REAL_USER"
 
-# 1. OSNOVNI ALATI
-echo "📦 Osnovni alati..."
-pacman -Syu --noconfirm doas fish git neovim fastfetch figlet alacritty flatpak util-linux pcsc-tools pcsclite btrfs-progs ntfs-3g dosfstools gwenview
+echo "🚀 Započinjem postavljanje sistema (BEZ FIREJAIL-A)..."
 
-# doas.conf
+# ----------------------------------------------------------------
+# 1. OSNOVNI ALATI I SISTEM
+# ----------------------------------------------------------------
+echo "📦 Instalacija osnovnih paketa..."
+# Uklonjen firejail iz liste ispod
+pacman -Syu --noconfirm base-devel xdg-desktop-portal-gnome doas fish git neovim fastfetch figlet ghostty \
+flatpak util-linux pcsc-tools pcsclite btrfs-progs ntfs-3g dosfstools gwenview \
+vlc libreoffice-fresh gimp kdenlive usbguard python-pip btop \
+btrfs-assistant gparted fuzzel swaybg firefox ttf-jetbrains-mono-nerd \
+xwayland-satellite firewalld tlp tlp-rdw
+
+# Podešavanje doas
 echo "permit persist :wheel" > /etc/doas.conf
 chmod 0400 /etc/doas.conf
+# Kreiranje simlinka za sudo
+ln -sf /usr/bin/doas /usr/bin/sudo
 
-systemctl enable --now pcscd.socket
+# ----------------------------------------------------------------
+# 2. AUR HELPER (YAY)
+# ----------------------------------------------------------------
+echo "🟨 Instaliram yay..."
+sudo -u "$REAL_USER" bash <<EOF
+cd /tmp
+rm -rf yay
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si --noconfirm
+EOF
 
-# SNAPSHOTS: Snapper + pac hooks + GRUB (pretpostavlja Btrfs root @)
-echo "📸 Snapper setup..."
+echo "🟦 Instaliram Niri i Noctalia..."
+sudo -u "$REAL_USER" yay -S --noconfirm niri noctalia-shell
+
+# ----------------------------------------------------------------
+# 3. SNAPSHOTS (Snapper + Btrfs)
+# ----------------------------------------------------------------
+echo "📸 Konfiguracija Snapper-a..."
 pacman -S --noconfirm snapper snap-pac grub-btrfs efibootmgr grub
+
+ROOT_PART=$(findmnt -n -o SOURCE /)
 
 umount /.snapshots 2>/dev/null || true
 rm -rf /.snapshots 2>/dev/null || true
 snapper -c root create-config /
 mkdir /.snapshots
-mount -o subvol=@snapshots /dev/[TVOJ_ROOT_DISK_PART] /.snapshots  # ZAMENI npr. /dev/nvme0n1p2
+mount -o subvol=@snapshots "$ROOT_PART" /.snapshots
 
-# Config root
 cat <<EOF > /etc/snapper/configs/root
 TIMELINE_CREATE="yes"
 TIMELINE_CLEANUP="yes"
@@ -45,92 +75,85 @@ systemctl enable --now snapper-timeline.timer snapper-cleanup.timer
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 
-# 2. TLP
-echo "🔋 TLP..."
-pacman -S --noconfirm tlp tlp-rdw
-systemctl enable tlp
-
+# ----------------------------------------------------------------
+# 4. OPTIMIZACIJA BATERIJE (TLP)
+# ----------------------------------------------------------------
+echo "🔋 Podešavanje TLP..."
 cat <<EOF > /etc/tlp.conf
 TLP_ENABLE=1
 CPU_BOOST_ON_AC=1
-CPU_BOOST_ON_BAT=1
-CPU_HWP_DYN_BOOST_ON_AC=0
-CPU_HWP_DYN_BOOST_ON_BAT=0
+CPU_BOOST_ON_BAT=0
 CPU_SCALING_MAX_FREQ_ON_AC=3200000
 CPU_SCALING_MAX_FREQ_ON_BAT=2200000
-CPU_SCALING_MIN_FREQ_ON_AC=400000
-CPU_SCALING_MIN_FREQ_ON_BAT=400000
 CPU_ENERGY_PERF_POLICY_ON_AC=balance_performance
 CPU_ENERGY_PERF_POLICY_ON_BAT=balance_power
 PLATFORM_PROFILE_ON_AC=balanced
-PLATFORM_PROFILE_ON_BAT=quiet
-START_CHARGE_THRESH_BAT0=70
+PLATFORM_PROFILE_ON_BAT=low-power
+START_CHARGE_THRESH_BAT0=75
 STOP_CHARGE_THRESH_BAT0=80
-DISK_APM_LEVEL_ON_AC="254 254"
 EOF
-tlp start
+systemctl enable --now tlp
 
-# 3. PROGRAMI
-echo "🛒 Aplikacije..."
-pacman -S --noconfirm vlc libreoffice-fresh gimp syncthing networkmanager-openvpn kcalc kdenlive ktorrent dolphin firejail usbguard veracrypt python-pip btop btrfs-assistant gparted
+# ----------------------------------------------------------------
+# 5. BEZBEDNOST (Firewall, USBGuard, DNS)
+# ----------------------------------------------------------------
+echo "🛡️ Bezbednosne postavke..."
 
-# 4. BEZBEDNOST
-echo "🛡️ Firejail & USBGuard..."
+# USBGuard
 usbguard generate-policy > /etc/usbguard/rules.conf
 systemctl enable --now usbguard
-firecfg
+# UKLONJENA firecfg komanda
 
-# 5. DNS over TLS
-echo "🌐 DNS over TLS..."
-sed -i '/\\[Resolve\\]/,/^\\[/s|.*||' /etc/systemd/resolved.conf 2>/dev/null || true
-cat <<EOF >> /etc/systemd/resolved.conf
+# DNS over TLS
+cat <<EOF > /etc/systemd/resolved.conf
 [Resolve]
 DNS=1.1.1.1 9.9.9.9
 DNSOverTLS=yes
 DNSSEC=yes
 Domains=~.
-FallbackDNS=1.1.1.1
 EOF
 ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
-systemctl restart systemd-resolved
+systemctl enable --now systemd-resolved
 
-# 6. Firewall
-pacman -S --noconfirm firewalld
+# Firewall
 systemctl enable --now firewalld
-firewall-cmd --permanent --add-service=syncthing
 firewall-cmd --permanent --add-service=ssh
-firewall-cmd --permanent --add-service=openvpn
-firewall-cmd --permanent --add-interface=tun+ --zone=trusted
 firewall-cmd --reload
 
-# 7. Korisnik lxd
-echo "👤 lxd..."
-FISH_PATH=/usr/bin/fish
-chsh -s "$FISH_PATH" lxd
+# Pametne kartice
+systemctl enable --now pcscd.socket
 
-mkdir -p /home/lxd/.ssh
-echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAdMcT6vefOaOG8rqZPvZhndojpq1zXc5c61zTzOKnim moj_nixos_pristup" > /home/lxd/.ssh/authorized_keys
-chown -R lxd:lxd /home/lxd/.ssh
-chmod 700 /home/lxd/.ssh
-chmod 600 /home/lxd/.ssh/authorized_keys
+# ----------------------------------------------------------------
+# 6. KORISNIČKO OKRUŽENJE (Fish & SSH)
+# ----------------------------------------------------------------
+echo "👤 Konfiguracija korisnika $REAL_USER..."
+chsh -s /usr/bin/fish "$REAL_USER"
 
-mkdir -p /home/lxd/.config/fish
-cat <<EOF > /home/lxd/.config/fish/config.fish
+mkdir -p "$USER_HOME/.ssh"
+echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAdMcT6vefOaOG8rqZPvZhndojpq1zXc5c61zTzOKnim moj_nixos_pristup" > "$USER_HOME/.ssh/authorized_keys"
+chown -R "$REAL_USER":"$REAL_USER" "$USER_HOME/.ssh"
+chmod 700 "$USER_HOME/.ssh"
+chmod 600 "$USER_HOME/.ssh/authorized_keys"
+
+mkdir -p "$USER_HOME/.config/fish"
+cat <<EOF > "$USER_HOME/.config/fish/config.fish
 if status is-interactive
-   alias sys-up='doas pacman -Syu --refresh'
-   alias sys-clean='doas pacman -Rns (pacman -Qtdq) && doas pacman -Sc'
-   alias usb-list='doas usbguard list-devices'
-   alias usb-allow='doas usbguard allow-device'
-   alias battery='doas tlp-stat -b'
-   alias fetch='fastfetch'
-   alias gs='git status'
-   alias gp='git push'
-   alias gl='git pull'
-   alias snap-list='snapper list'
-   alias snap-del='sudo snapper delete'
+    alias sys-up='doas pacman -Syu'
+    alias sys-clean='doas pacman -Rns (pacman -Qtdq); and doas pacman -Sc'
+    alias usb-list='doas usbguard list-devices'
+    alias battery='doas tlp-stat -b'
+    alias fetch='fastfetch'
+    
+    alias gs='git status'
+    alias gp='git push'
+    alias gl='git pull'
+
+    alias snap-list='doas snapper list'
+    alias snap-del='doas snapper delete'
 end
 EOF
-chown -R lxd:lxd /home/lxd/.config/fish
+chown -R "$REAL_USER":"$REAL_USER" "$USER_HOME/.config"
 
-echo "✅ Gotovo + Snapper! Instaliraj ručno btrfs-assistant i podesi GUI. Reboot."
-echo "⚠️ ZAMENI /dev/[TVOJ_ROOT_DISK_PART] (lsblk | grep '@$')"
+echo "-------------------------------------------------------"
+echo "✅ INSTALACIJA ZAVRŠENA (Firejail uspešno izbačen)!"
+echo "🚀 Rebootuj sistem."

@@ -151,7 +151,9 @@ window-rule {
 binds {
 
     Mod+E { spawn "nautilus" ; }
-    Mod+B { spawn "flatpak" "run" "app.zen_browser.zen" ; }
+    // Mod+B { spawn "flatpak" "run" "app.zen_browser.zen" ; }
+    // Mod+B { spawn "firejail" "firefox"; }
+    Mod+B { spawn "/usr/bin/firefox"; }
     
     // `niri msg action do-something`.
 

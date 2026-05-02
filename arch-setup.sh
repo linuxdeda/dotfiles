@@ -147,31 +147,62 @@ chmod 700 "$USER_HOME/.ssh"
 chmod 600 "$USER_HOME/.ssh/authorized_keys"
 
 mkdir -p "$USER_HOME/.config/fish"
-cat <<EOF > "$USER_HOME/.config/fish/config.fish"
+cat <<'EOF' > "$USER_HOME/.config/fish/config.fish"
 if status is-interactive
-    # Uklanjanje pozdrava
     set -g fish_greeting ""
 
-    # Aliasi za upravljanje sistemom
+    ### SSH AGENT
+    if not pgrep -u (id -u) ssh-agent >/dev/null
+        eval (ssh-agent -c)
+    end
+
+    ### FUNKCIJE
+    function banner
+        set -l cols (tput cols)
+        printf '\e[H\e[2J'
+        if type -q figlet
+            figlet -f standard -w $cols 'linuxdeda.com'
+        else
+            echo 'linuxdeda.com'
+        end
+        echo
+    end
+
+    function sys-clean
+        set -l orphans (pacman -Qtdq 2>/dev/null)
+        if test -n "$orphans"
+            doas pacman -Rns $orphans
+        end
+        doas pacman -Sc
+    end
+
+    ### INTERAKTIVNI DEO
+    banner
+
+    if type -q fastfetch
+        fastfetch
+    end
+    echo
+
+    bind \cl 'banner; commandline -f repaint'
+
+    ### ALIJASI
     alias sys-up='doas pacman -Syu'
-    alias sys-clean='doas pacman -Rns (pacman -Qtdq); and doas pacman -Sc'
+    alias sys-clean='sys-clean'
     alias usb-list='doas usbguard list-devices'
     alias battery='doas tlp-stat -b'
     alias fetch='fastfetch'
-    
-    # Git prečice
+
     alias gs='git status'
     alias gp='git push'
     alias gl='git pull'
 
-    # Snapper prečice
     alias snap-list='doas snapper list'
     alias snap-del='doas snapper delete'
-    
-    # Niri prečica
+
     alias niri-conf='nvim ~/.config/niri/config.kdl'
-    
-    # Wayland popravke
+
+    ### WAYLAND
     set -gx SDL_VIDEODRIVER wayland
     set -gx CLUTTER_BACKEND wayland
     set -gx QT_QPA_PLATFORM wayland

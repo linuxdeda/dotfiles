@@ -10,27 +10,35 @@ fi
 REAL_USER="lxd"
 USER_HOME="/home/$REAL_USER"
 
-echo "🚀 Započinjem postavljanje sistema (BEZ FIREJAIL-A)..."
+echo "🚀 Započinjem postavljanje sistema (Arch Minimal + Niri + Noctalia)..."
 
 # ----------------------------------------------------------------
-# 1. OSNOVNI ALATI I SISTEM
+# 1. OSNOVNI ALATI, AUDIO I GRAFIKA
 # ----------------------------------------------------------------
 echo "📦 Instalacija osnovnih paketa..."
-# Uklonjen firejail iz liste ispod
-pacman -Syu --noconfirm base-devel xdg-desktop-portal-gnome doas fish git neovim fastfetch figlet ghostty \
+
+# Dodati: mesa i vulkan-intel (za tvoj i5-1334U), 
+# pipewire (audio), bluez (bluetooth), networkmanager
+pacman -Syu --noconfirm base-devel xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
+doas fish git neovim fastfetch figlet ghostty networkmanager \
+pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber \
+bluez bluez-utils mesa vulkan-intel intel-ucode \
 flatpak util-linux pcsc-tools pcsclite btrfs-progs ntfs-3g dosfstools gwenview \
 vlc libreoffice-fresh gimp kdenlive usbguard python-pip btop \
 btrfs-assistant gparted fuzzel swaybg firefox ttf-jetbrains-mono-nerd \
-xwayland-satellite firewalld tlp tlp-rdw
+xwayland-satellite firewalld tlp tlp-rdw ttf-inter brightnessctl intel-media-driver libva-utils
+
+# Omogućavanje mrežnog servisa i bluetooth-a
+systemctl enable --now NetworkManager
+systemctl enable --now bluetooth
 
 # Podešavanje doas
 echo "permit persist :wheel" > /etc/doas.conf
 chmod 0400 /etc/doas.conf
-# Kreiranje simlinka za sudo
 ln -sf /usr/bin/doas /usr/bin/sudo
 
 # ----------------------------------------------------------------
-# 2. AUR HELPER (YAY)
+# 2. AUR HELPER (YAY) & DESKTOP ENVIROMENT
 # ----------------------------------------------------------------
 echo "🟨 Instaliram yay..."
 sudo -u "$REAL_USER" bash <<EOF
@@ -41,8 +49,9 @@ cd yay
 makepkg -si --noconfirm
 EOF
 
-echo "🟦 Instaliram Niri i Noctalia..."
-sudo -u "$REAL_USER" yay -S --noconfirm niri noctalia-shell
+echo "🟦 Instaliram Niri i Noctalia (i zavisnosti za shell)..."
+# Noctalia zahteva ags i često swww za wallpapere
+sudo -u "$REAL_USER" yay -S --noconfirm niri noctalia-shell swww-git aygram-hot-reload-git
 
 # ----------------------------------------------------------------
 # 3. SNAPSHOTS (Snapper + Btrfs)
@@ -76,19 +85,21 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # ----------------------------------------------------------------
-# 4. OPTIMIZACIJA BATERIJE (TLP)
+# 4. OPTIMIZACIJA BATERIJE (TLP) - Prilagođeno tvom i5-1334U
 # ----------------------------------------------------------------
 echo "🔋 Podešavanje TLP..."
 cat <<EOF > /etc/tlp.conf
 TLP_ENABLE=1
 CPU_BOOST_ON_AC=1
 CPU_BOOST_ON_BAT=0
+# Ograničavamo frekvenciju kako bi tvoj 13th gen ostao hladan
 CPU_SCALING_MAX_FREQ_ON_AC=3200000
 CPU_SCALING_MAX_FREQ_ON_BAT=2200000
 CPU_ENERGY_PERF_POLICY_ON_AC=balance_performance
-CPU_ENERGY_PERF_POLICY_ON_BAT=balance_power
+CPU_ENERGY_PERF_POLICY_ON_BAT=power
 PLATFORM_PROFILE_ON_AC=balanced
 PLATFORM_PROFILE_ON_BAT=low-power
+# Čuvanje baterije na tvom laptopu
 START_CHARGE_THRESH_BAT0=75
 STOP_CHARGE_THRESH_BAT0=80
 EOF
@@ -99,10 +110,9 @@ systemctl enable --now tlp
 # ----------------------------------------------------------------
 echo "🛡️ Bezbednosne postavke..."
 
-# USBGuard
+# USBGuard - Pažljivo sa ovim, generiše polisu za trenutno ubačene uređaje
 usbguard generate-policy > /etc/usbguard/rules.conf
 systemctl enable --now usbguard
-# UKLONJENA firecfg komanda
 
 # DNS over TLS
 cat <<EOF > /etc/systemd/resolved.conf
@@ -130,30 +140,46 @@ echo "👤 Konfiguracija korisnika $REAL_USER..."
 chsh -s /usr/bin/fish "$REAL_USER"
 
 mkdir -p "$USER_HOME/.ssh"
-echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAdMcT6vefOaOG8rqZPvZhndojpq1zXc5c61zTzOKnim moj_nixos_pristup" > "$USER_HOME/.ssh/authorized_keys"
+# Tvoj SSH ključ
+echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAdMcT6vefOaOG8rqZPvZhndojpq1zXc5c61zTzOKnim lxd-secure-key" > "$USER_HOME/.ssh/authorized_keys"
 chown -R "$REAL_USER":"$REAL_USER" "$USER_HOME/.ssh"
 chmod 700 "$USER_HOME/.ssh"
 chmod 600 "$USER_HOME/.ssh/authorized_keys"
 
 mkdir -p "$USER_HOME/.config/fish"
-cat <<EOF > "$USER_HOME/.config/fish/config.fish
+cat <<EOF > "$USER_HOME/.config/fish/config.fish"
 if status is-interactive
+    # Uklanjanje pozdrava
+    set -g fish_greeting ""
+
+    # Aliasi za upravljanje sistemom
     alias sys-up='doas pacman -Syu'
     alias sys-clean='doas pacman -Rns (pacman -Qtdq); and doas pacman -Sc'
     alias usb-list='doas usbguard list-devices'
     alias battery='doas tlp-stat -b'
     alias fetch='fastfetch'
     
+    # Git prečice
     alias gs='git status'
     alias gp='git push'
     alias gl='git pull'
 
+    # Snapper prečice
     alias snap-list='doas snapper list'
     alias snap-del='doas snapper delete'
+    
+    # Niri prečica
+    alias niri-conf='nvim ~/.config/niri/config.kdl'
+    
+    # Wayland popravke
+    set -gx SDL_VIDEODRIVER wayland
+    set -gx CLUTTER_BACKEND wayland
+    set -gx QT_QPA_PLATFORM wayland
 end
 EOF
 chown -R "$REAL_USER":"$REAL_USER" "$USER_HOME/.config"
 
 echo "-------------------------------------------------------"
-echo "✅ INSTALACIJA ZAVRŠENA (Firejail uspešno izbačen)!"
+echo "✅ INSTALACIJA ZAVRŠENA!"
+echo "💡 Preporuka: Nakon reboota, pokreni 'niri' iz terminala."
 echo "🚀 Rebootuj sistem."

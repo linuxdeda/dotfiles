@@ -13,9 +13,9 @@ echo "📦 Instalacija osnovnih alata..."
 dnf install -y doas fish git vim fastfetch figlet alacritty flatpak util-linux-user pcsc-lite
 
 # Podešavanje doas (zamena za tvoj security.doas iz Nix-a)
-echo "permit persist :wheel" > /etc/doas.conf
-chown root:root /etc/doas.conf
-chmod 0400 /etc/doas.conf
+echo 'permit persist :wheel' | sudo tee /etc/doas.conf >/dev/null
+sudo chown root:root /etc/doas.conf
+sudo chmod 0400 /etc/doas.conf
 
 # Omogućavanje pcscd (važno za KeepassXC i hardverske ključeve)
 systemctl enable --now pcscd

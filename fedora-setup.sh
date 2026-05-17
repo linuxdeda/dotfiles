@@ -139,3 +139,64 @@ chown -R lxd:lxd /home/lxd/.config/fish
 
 echo "✅ Sve je završeno! Sistem je spreman."
 echo "⚠️  RESTARTUJ KOMPJUTER kako bi TLP i promene shell-a stupile na snagu."
+
+
+After install Fedora:
+
+1⃣ Faster DNF Configuration
+
+Open:
+sudo nano /etc/dnf/dnf.conf
+
+Add these lines:
+max_parallel_downloads=10
+fastestmirror=True
+defaultyes=True
+keepcache=True
+
+━━━━━━━━━━━━━━━
+
+2⃣ Update The System
+
+sudo dnf upgrade --refresh
+
+━━━━━━━━━━━━━━━
+
+3⃣ RPM Fusion Repositories
+
+sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-44.noarch.rpm
+
+sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-44.noarch.rpm
+
+━━━━━━━━━━━━━━━
+
+4⃣ Multimedia Codecs
+
+sudo dnf swap ffmpeg-free ffmpeg --allowerasing
+sudo dnf group upgrade multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
+
+━━━━━━━━━━━━━━━
+
+5⃣ Enable Flathub
+
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+━━━━━━━━━━━━━━━
+
+6⃣ AppImage Support
+
+sudo dnf install fuse fuse-libs
+
+━━━━━━━━━━━━━━━
+
+7⃣ Docker Installation
+
+sudo dnf install docker docker-compose
+
+sudo systemctl enable --now docker
+
+sudo usermod -aG docker $USER
+
+━━━━━━━━━━━━━━━
+
+Reboot once after setup for best experience 👍

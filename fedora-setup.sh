@@ -82,8 +82,8 @@ dnf install -y vlc libreoffice-qt6-fresh gimp thunderbird keepassxc \
 # 4. BEZBEDNOST (FIREJAIL & USBGUARD)
 echo "🛡️ Učvršćivanje sistema (Sandboxing & USB)..."
 # USBGuard inicijalizacija (dozvoljava trenutno prikačene uređaje)
-usbguard generate-policy > /etc/usbguard/rules.conf
-systemctl enable --now usbguard
+sudo usbguard generate-policy | sudo tee /etc/usbguard/rules.conf >/dev/null
+sudo systemctl enable --now usbguard
 
 # Firejail sandbox integracija
 firecfg

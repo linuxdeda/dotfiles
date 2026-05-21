@@ -10,7 +10,8 @@ echo "🚀 Započinjem transformaciju Fedore u tvoj NixOS setup..."
 
 # 1. OSNOVNI ALATI, SHELL I SERVISI
 echo "📦 Instalacija osnovnih alata..."
-dnf install -y doas fish git vim fastfetch figlet alacritty flatpak util-linux-user pcsc-lite
+dnf copr enable scottames/ghostty
+dnf install -y doas fish  vim fastfetch figlet ghostty
 
 # Podešavanje doas (zamena za tvoj security.doas iz Nix-a)
 echo 'permit persist :wheel' | sudo tee /etc/doas.conf >/dev/null
@@ -74,10 +75,7 @@ EOF
 
 # 3. INSTALACIJA SVIH PROGRAMA
 echo "🛒 Instalacija aplikacija..."
-dnf install -y vlc libreoffice-qt6-fresh gimp thunderbird keepassxc \
-               syncthing openvpn NetworkManager-openvpn-gnome nm-connection-editor \
-               python3-pip veracrypt kcalc kdenlive \
-               ktorrent dolphin partitionmanager firejail usbguard
+dnf install -y vlc gimp openvpn NetworkManager-openvpn-gnome nm-connection-editor python3-pip  kdenlive firejail usbguard
 
 # 4. BEZBEDNOST (FIREJAIL & USBGUARD)
 echo "🛡️ Učvršćivanje sistema (Sandboxing & USB)..."

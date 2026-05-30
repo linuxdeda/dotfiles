@@ -198,3 +198,5 @@ sudo usermod -aG docker $USER
 ━━━━━━━━━━━━━━━
 
 Reboot once after setup for best experience 👍
+
+rgba(251, 241, 199, 0.0);

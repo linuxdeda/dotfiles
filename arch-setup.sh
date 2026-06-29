@@ -33,9 +33,10 @@ systemctl enable --now NetworkManager
 systemctl enable --now bluetooth
 
 # Podešavanje doas
-echo "permit persist :wheel" > /etc/doas.conf
-chmod 0400 /etc/doas.conf
-ln -sf /usr/bin/doas /usr/bin/sudo
+printf 'permit persist :wheel\n' | sudo tee /etc/doas.conf >/dev/null
+sudo chown root:root /etc/doas.conf
+sudo chmod 0400 /etc/doas.conf
+doas -C /etc/doas.conf && echo ok
 
 # ----------------------------------------------------------------
 # 2. AUR HELPER (YAY) & DESKTOP ENVIROMENT
